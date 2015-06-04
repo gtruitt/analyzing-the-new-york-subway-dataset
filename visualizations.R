@@ -16,14 +16,12 @@ p <- p + geom_histogram(binwidth=100, position="dodge")
 p <- p + scale_x_continuous(limits=c(0, 5000))
 print(p)
 
-# separate out the Mondays and aggregate mean ridership by hour
-nycMondays <- nyc[weekdays(as.Date(nyc$DATEn)) == "Monday",]
-nycMondays <- nycMondays[,c("Hour", "ENTRIESn_hourly")]
-nycMondays <- aggregate(nycMondays, by=list(nycMondays$Hour), FUN=mean)
+# aggregate mean ridership by hour
+nycHourly <- aggregate(nyc, by=list(nyc$Hour), FUN=mean)
 
-# plot second visualization; bar graph of average ridership by hour on Mondays
-p <- ggplot(nycMondays, aes(Hour, ENTRIESn_hourly))
-p <- p + ggtitle("Average Subway Entries by Hour on Mondays")
+# plot second visualization; bar graph of average ridership by hour
+p <- ggplot(nycHourly, aes(Hour, ENTRIESn_hourly))
+p <- p + ggtitle("Average Subway Entries by Hour")
 p <- p + ylab("Average Entries")
 p <- p + xlab("Hour")
 p <- p + geom_bar(stat="identity")
